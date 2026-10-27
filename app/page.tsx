@@ -36,10 +36,31 @@ const gear: Gear[] = [
  {name:'First Aid Trail Kit',category:'Safety',description:'Compact essentials for responsible day hikes.',price:249,rent:0,image:'https://images.unsplash.com/photo-1603398938378-e54eab446dde?auto=format&fit=crop&w=700&q=80',available:true},
 ]
 
-const placeTemplates = (trail: Trail) => [
- {name:`${trail.location.split(',')[0]} Trailhead Homestay`,category:'Stay',distance:2.4,rating:4.6,price:'₹1,200/night',image:'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=700&q=80'},
- {name:'Local Chai & Kitchen',category:'Food',distance:1.2,rating:4.7,price:'₹₹',image:'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=700&q=80'},
- {name:'Valley Viewpoint',category:'Attraction',distance:5.8,rating:4.8,price:'Free',image:'https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=700&q=80'},
+const nearbyByTrail: Record<string, {name:string;category:'Stay'|'Food'|'Attraction';distance:number;rating:number;price:string;image:string}[]> = {
+	'Tungnath Trek': [
+		{name:'Chopta Alpine Homestay',category:'Stay',distance:1.1,rating:4.6,price:'₹900/night · demo',image:'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=700&q=80'},
+		{name:'Chopta Meadow Camp',category:'Stay',distance:2.3,rating:4.5,price:'₹1,100/night · demo',image:'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?auto=format&fit=crop&w=700&q=80'},
+		{name:'Chopta Chai Point',category:'Food',distance:0.8,rating:4.4,price:'₹₹ · demo',image:'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=700&q=80'},
+		{name:'Tungnath Temple View',category:'Attraction',distance:3.8,rating:4.9,price:'Free · demo',image:'https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=700&q=80'},
+	],
+	'Kedarkantha Summit Route': [
+		{name:'Sankri Basecamp Lodge',category:'Stay',distance:0.7,rating:4.7,price:'₹800/night · demo',image:'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=700&q=80'},
+		{name:'Sankri Pine Homestay',category:'Stay',distance:1.4,rating:4.5,price:'₹700/night · demo',image:'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=700&q=80'},
+		{name:'Sankri Mountain Dhaba',category:'Food',distance:0.5,rating:4.5,price:'₹₹ · demo',image:'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=700&q=80'},
+		{name:'Sankri Village Walk',category:'Attraction',distance:1.8,rating:4.6,price:'Free · demo',image:'https://images.unsplash.com/photo-1448375240586-882707db888b?auto=format&fit=crop&w=700&q=80'},
+	],
+	'Triund Trek': [
+		{name:'Dharamkot Forest Guesthouse',category:'Stay',distance:1.2,rating:4.6,price:'₹1,000/night · demo',image:'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=700&q=80'},
+		{name:'McLeod Ganj Valley Hostel',category:'Stay',distance:2.8,rating:4.4,price:'₹650/night · demo',image:'https://images.unsplash.com/photo-1449158743715-0a90ebb6d2d8?auto=format&fit=crop&w=700&q=80'},
+		{name:'Dharamkot Café Kitchen',category:'Food',distance:0.9,rating:4.7,price:'₹₹ · demo',image:'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=700&q=80'},
+		{name:'Dhauladhar Ridge View',category:'Attraction',distance:5.8,rating:4.8,price:'Free · demo',image:'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=700&q=80'},
+	],
+}
+
+const placeTemplates = (trail: Trail) => nearbyByTrail[trail.name] ?? [
+	{name:`${trail.location.split(',')[0]} Trailhead Homestay`,category:'Stay',distance:2.4,rating:4.6,price:'₹1,200/night · demo',image:'https://images.unsplash.com/photo-1510798831971-661eb04b3739?auto=format&fit=crop&w=700&q=80'},
+	{name:`${trail.location.split(',')[0]} Local Kitchen`,category:'Food',distance:1.2,rating:4.5,price:'₹₹ · demo',image:'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=700&q=80'},
+	{name:`${trail.location.split(',')[0]} Viewpoint`,category:'Attraction',distance:5.8,rating:4.8,price:'Free · demo',image:'https://images.unsplash.com/photo-1464278533981-50106e6176b1?auto=format&fit=crop&w=700&q=80'},
 ]
 const normalize = (v:string) => v.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
 const formatDuration = (h:number) => h >= 10 ? `${Math.floor(h/8)}d ${h%8}h` : `${h}h`
